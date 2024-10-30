@@ -1,0 +1,69 @@
+.draggable-container{
+  margin: 20px;
+  padding: 0 20px 20px 20px;
+  text-align: center;
+  border: 1px solid #435DE4;
+}
+.draggable-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+}
+.paragraph {
+  margin: 20px;
+}
+
+.blank {
+  display: inline-block;
+  width: 150px;
+  height: 30px;
+  margin: 0 5px;
+  border: 1px dashed #ccc;
+}
+
+.drag-words {
+  margin: 20px;
+}
+
+.drag-word {
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  background-color: #F4F6FF;
+  border: 1px dashed #435DE4;
+  border-radius: 20px;
+  cursor: grab;
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+.button-submit{
+  padding: 0.75rem;
+  background: #DCE2FF;
+  border-radius:  0.75rem;
+  border: none;
+
+}
+
+.button-submit:hover{
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.result {
+  font-size: 16px;
+  font-weight:  500;
+}
+
+.correct {
+  color: #1F845A;
+}
+
+.incorrect {
+  color: #D52D2D;
+}
