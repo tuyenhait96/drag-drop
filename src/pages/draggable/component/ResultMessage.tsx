@@ -6,7 +6,7 @@ const ResultMessage = ({ isCorrect }: { isCorrect: boolean | null }) => {
 
   return (
     <div className={`result ${isCorrect ? "correct" : "incorrect"}`}>
-      {isCorrect ? "Chính xác" : "Sai"}
+      {isCorrect ? "Correct" : "Incorrect"}
     </div>
   );
 };

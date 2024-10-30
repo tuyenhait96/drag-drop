@@ -2,8 +2,8 @@
 import React from "react";
 import { useTransition } from "react-spring";
 // component
-import ParagraphContent from "./component/ParagraphContent.tsx";
 import DraggableList from "./component/DraggableList.tsx";
+import ParagraphContent from "./component/ParagraphContent.tsx";
 import ResultMessage from "./component/ResultMessage.tsx";
 // hooks
 import { useDraggableReducer } from "./hooks/useDraggableReducer.ts";
@@ -24,10 +24,8 @@ const Draggable = () => {
 
   const handleSubmit = () => {
     const correctAnswers = state.data.blanks.map((b) => b.correctAnswer);
-    const userInputs = [
-      state.userAnswers.first.answer,
-      state.userAnswers.second.answer,
-    ];
+    const userInputs = state.data.blanks.map((b) => state.userAnswers[b.position]?.answer);
+
     state.setIsCorrect(
       JSON.stringify(correctAnswers) === JSON.stringify(userInputs)
     );

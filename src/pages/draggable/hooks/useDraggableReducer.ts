@@ -4,7 +4,6 @@ import { useReducer } from "react";
 import jsonData from "../data.json";
 // constants
 import { ActionTypes } from "../constants.ts";
-
 const {
   SET_USER_ANSWERS,
   SET_IS_CORRECT,
@@ -15,20 +14,10 @@ const {
 } = ActionTypes;
 
 const initialState = {
-  userAnswers: {
-    first: { answer: "", color: "" },
-    second: { answer: "", color: "" },
-  },
+  userAnswers: {},
   isCorrect: null,
   draggedWord: null,
-  disabledInputs: {
-    first: jsonData.question.blanks.some(
-      (b) => b.position === "first" && b.type === "drag"
-    ),
-    second: jsonData.question.blanks.some(
-      (b) => b.position === "second" && b.type === "drag"
-    ),
-  },
+  disabledInputs: {},
   isAnswerCorrect: false,
   data: {
     paragraph: jsonData.question.paragraph || "",
@@ -36,6 +25,15 @@ const initialState = {
     dragWords: jsonData.question.dragWords || [],
   },
 };
+
+// Initialize disabledInputs dynamically based on blanks
+jsonData.question.blanks.forEach((blank) => {
+  if (blank.type === "drag") {
+    initialState.disabledInputs[blank?.position] = true;
+  } else {
+    initialState.disabledInputs[blank?.position] = false;
+  }
+});
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -84,6 +82,8 @@ const reducer = (state, action) => {
         },
       };
     }
+    default:
+      return state;
   }
 };
 

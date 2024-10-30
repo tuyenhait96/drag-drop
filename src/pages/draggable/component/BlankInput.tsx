@@ -10,6 +10,7 @@ export const BlankInput = ({
   disabled,
   onChange,
   onDrop,
+  onDragOver
 }: BlankInputProps) => (
   <input
     key={index}
@@ -21,7 +22,7 @@ export const BlankInput = ({
       onDrop(e);
     }}
     disabled={disabled}
-    onDragOver={(e) => e.preventDefault()}
+    onDragOver={onDragOver}
     className="blank"
     style={{ backgroundColor: backgroundColor }}
   />

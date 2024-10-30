@@ -16,10 +16,11 @@ export const useDragHandlers = (state) => {
 
   const handleDrop = (blankId, correctAnswer) => {
     if (draggedWord === correctAnswer) {
-      const blankKey = blankId === 1 ? "first" : "second";
+      const blank = data.blanks.find((b) => b.id === blankId);
+      const blankKey = blank?.position;
       const draggedWordData = data.dragWords.find(
         (word) => word.word === draggedWord
-      ); // Find the color of the dragged word from dragWords
+      );
       const draggedColor = draggedWordData ? draggedWordData.color : "default";
 
       batch(() => {

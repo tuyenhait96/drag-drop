@@ -4,21 +4,23 @@ import { batch } from "react-redux";
 // components
 import { BlankInput } from "./BlankInput.tsx";
 
-const ParagraphContent = ({
-  userAnswers,
-  setUserAnswers,
-  setIsCorrect,
-  data,
-  setData,
-  setDisabledInputs,
-  disabledInputs,
-  handleDrop,
-}) => {
+const ParagraphContent = (state) => {
+  const {
+    userAnswers,
+    setUserAnswers,
+    setIsCorrect,
+    data,
+    setData,
+    setDisabledInputs,
+    disabledInputs,
+    handleDrop,
+  } = state || {};
+  let blankIndex = 0;
+
   return data.paragraph.split(/(\[_input\])/).map((part, index) => {
     if (part === "[_input]") {
-      const blankKey = index === 1 ? "first" : "second";
-      const blank = data.blanks.find((b) => b.position === blankKey);
-
+      const blank = data.blanks[blankIndex++];
+      const blankKey = blank?.position;
       return (
         <BlankInput
           key={index}
@@ -55,10 +57,18 @@ const ParagraphContent = ({
           }}
           onDrop={(e) => {
             e.preventDefault();
-            handleDrop(index === 1 ? 1 : 2, blank?.correctAnswer);
+            // Only allow drop if the blank type is 'drag'
+            if (blank?.type === "drag") {
+              handleDrop(blank.id, blank?.correctAnswer);
+            }
           }}
+          onDragOver={(e => {
+            if (blank?.type === "drag") {
+              e.preventDefault()
+            }
+          })}
           disabled={disabledInputs[blankKey]}
-          backgroundColor={userAnswers[blankKey]?.color || "#fff"}
+          backgroundColor={userAnswers[blankKey]?.color}
         />
       );
     }

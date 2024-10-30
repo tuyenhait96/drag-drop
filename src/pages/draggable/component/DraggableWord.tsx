@@ -22,4 +22,5 @@ const DraggableWord = ({
     {children}
   </animated.div>
 );
+
 export default DraggableWord;

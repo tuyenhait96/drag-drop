@@ -33,6 +33,7 @@ export type BlankInputProps = {
   disabled: boolean;
   onChange: (value: string) => void;
   onDrop: (e: React.DragEvent) => void;
+  onDragOver: (e: React.DragEvent) => void;
 };
 
 export type DraggableWordProps = {
