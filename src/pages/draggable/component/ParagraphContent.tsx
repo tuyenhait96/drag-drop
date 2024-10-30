@@ -1,5 +1,7 @@
+// react
 import React from "react";
-import { jsonData } from "../constants.ts";
+import { batch } from "react-redux";
+// components
 import { BlankInput } from "./BlankInput.tsx";
 
 const ParagraphContent = ({
@@ -12,51 +14,56 @@ const ParagraphContent = ({
   disabledInputs,
   handleDrop,
 }) => {
-  return jsonData.question.paragraph
-    .split(/(\[_input\])/)
-    .map((part, index) => {
-      if (part === "[_input]") {
-        const blankKey = index === 1 ? "first" : "second";
-        const blank = jsonData.question.blanks.find(
-          (b) => b.position === blankKey
-        );
+  return data.paragraph.split(/(\[_input\])/).map((part, index) => {
+    if (part === "[_input]") {
+      const blankKey = index === 1 ? "first" : "second";
+      const blank = data.blanks.find((b) => b.position === blankKey);
 
-        return (
-          <BlankInput
-            key={index}
-            index={index}
-            value={userAnswers[blankKey].answer}
-            onChange={(value) => {
-              const draggedWordData = data.find((word) => word.word === value);
+      return (
+        <BlankInput
+          key={index}
+          index={index}
+          value={userAnswers[blankKey]?.answer}
+          onChange={(value) => {
+            const draggedWordData = data.dragWords.find(
+              (word) => word.word === value
+            );
+
+            const draggedColor = draggedWordData
+              ? draggedWordData.color
+              : "default";
+
+            batch(() => {
               setIsCorrect(null);
-              const draggedColor = draggedWordData
-                ? draggedWordData.color
-                : "default";
+              setUserAnswers({
+                position: blankKey,
+                answer: { answer: value, color: draggedColor },
+              });
+            });
 
-              setUserAnswers((prev) => ({
-                ...prev,
-                [blankKey]: { answer: value, color: draggedColor },
-              }));
-
-              if (value === blank?.correctAnswer) {
-                setData((prev) => prev.filter((w) => w.word !== value));
-                setDisabledInputs((prev) => ({
-                  ...prev,
-                  [blankKey]: true,
-                }));
-              }
-            }}
-            onDrop={(e) => {
-              e.preventDefault();
-              handleDrop(index === 1 ? 1 : 2, blank?.correctAnswer);
-            }}
-            disabled={disabledInputs[blankKey]}
-            backgroundColor={userAnswers[blankKey].color || "#fff"}
-          />
-        );
-      }
-      return part;
-    });
+            if (value === blank?.correctAnswer) {
+              batch(() => {
+                setData({
+                  dragWords: data.dragWords.filter((w) => w.word !== value),
+                });
+                setDisabledInputs({
+                  position: blankKey,
+                  answer: true,
+                });
+              });
+            }
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            handleDrop(index === 1 ? 1 : 2, blank?.correctAnswer);
+          }}
+          disabled={disabledInputs[blankKey]}
+          backgroundColor={userAnswers[blankKey]?.color || "#fff"}
+        />
+      );
+    }
+    return part;
+  });
 };
 
 export default ParagraphContent;

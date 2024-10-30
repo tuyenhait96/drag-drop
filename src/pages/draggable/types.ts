@@ -42,3 +42,9 @@ export type DraggableWordProps = {
   onDragEnd: () => void;
   children: React.ReactNode;
 };
+
+export interface DraggableListProps {
+  transitions: any;
+  handleDragStart: (item: string) => void;
+  handleDragEnd: () => void;
+}

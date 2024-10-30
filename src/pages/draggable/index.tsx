@@ -6,26 +6,24 @@ import ParagraphContent from "./component/ParagraphContent.tsx";
 import DraggableList from "./component/DraggableList.tsx";
 import ResultMessage from "./component/ResultMessage.tsx";
 // hooks
-import { useDraggableState } from "./hooks/useDraggableState.ts";
+import { useDraggableReducer } from "./hooks/useDraggableReducer.ts";
 import { useDragHandlers } from "./hooks/useDragHandlers.ts";
-// constants
-import { jsonData } from "./constants.ts";
 // style
 import "./style.css";
 
 const Draggable = () => {
-  const state = useDraggableState();
+  const state = useDraggableReducer();
   const { handleDrop, handleDragStart, handleDragEnd } = useDragHandlers(state);
 
-  const transitions = useTransition(state.data, {
+  const transitions = useTransition(state.data.dragWords, {
     from: { opacity: 0, transform: "translateY(20px)" },
     enter: { opacity: 1, transform: "translateY(0)" },
     leave: { opacity: 0, transform: "translateY(-20px)" },
-    keys: state.data.map((item) => item.id),
+    keys: state.data.dragWords?.map((item) => item.id),
   });
 
   const handleSubmit = () => {
-    const correctAnswers = jsonData.question.blanks.map((b) => b.correctAnswer);
+    const correctAnswers = state.data.blanks.map((b) => b.correctAnswer);
     const userInputs = [
       state.userAnswers.first.answer,
       state.userAnswers.second.answer,
