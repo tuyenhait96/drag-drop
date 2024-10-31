@@ -38,14 +38,20 @@ export type BlankInputProps = {
 
 export type DraggableWordProps = {
   index: number;
-  style: any;
-  onDragStart: () => void;
-  onDragEnd: () => void;
+  onDragStart: (data: string | null) => void;
+  onDragEnd: (e: React.DragEvent | React.TouchEvent) => void;
   children: React.ReactNode;
+  style?: React.CSSProperties;
+  className?: string;
 };
 
 export interface DraggableListProps {
   transitions: any;
   handleDragStart: (item: string) => void;
   handleDragEnd: () => void;
+}
+
+export interface Position {
+  x: number;
+  y: number;
 }
